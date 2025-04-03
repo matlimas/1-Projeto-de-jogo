@@ -1,123 +1,25 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+Introdução 
+Este projeto foi realizado pelos alunos Matheus Lima de Sá e Edgar Vinicius Teixeira Teófilo com o objetivo de aprimorar os nossos conhecimentos de programação estruturada na linguagem C, por meio do desenvolvimento de três jogos diferentes: "Pergunta e Resposta", "Cobra na caixa!" e "Gousmas War".
 
-#define NUM_CAIXAS 5
-#define NUM_JOGADORES 2
+Para começar, é exibido um menu onde o usuário pode selecionar  um dos três jogos ou sair do programa.
 
-char *nomes[] = {"Neymar", "Cristiano", "Jaderson", "Kadu", "Eduardo", "Vinicius", "Raphinha"};
+Opção 1. O primeiro jogo é baseado em cinco perguntas de múltipla escolha sobre assuntos distintos.
+As cinco perguntas estão armazenadas em um array.
+As respostas são verificadas e comparadas com a entrada do usuário, caso o jogador acerte, é somado 1 ponto ao seu histórico de acertos, caso o jogador erre, a resposta certa é revelada.
+No final, o numero de acertos do jogador é contabilizado.
 
-void perguntaEResposta() {
-    char resposta;
-    int acertos = 0;
-    
-    const char* pergunta[5] = {
-        "Qual time de futebol tem mais titulos no mundo? \n(a)Barcelona \n(b)Clube do Remo \n(c)Real Madrid \n(d)Paysandu \nResposta: ",
-        "Quem foi considerada a Redentora do Brasil? \n(a) Princesa Isabel \n(b) Maria da Penha \n(c)Marta \n(d)Tarsila do Amaral \nResposta: ",
-        "Quem e o homem de ferro? \n(a)Bruce Wayne \n(b)Tony Stark \n(c)Steve Rogers \n(d)Bruce Banner \nResposta: ",
-        "Quanto e 1+1? \n(a)4 \n(b)2 \n(c)3 \n(d)5 \nResposta: ",
-        "Quanto e 6*6? \n(a)22 \n(b)24 \n(c)12 \n(d)36 \nResposta: "
-    };
-    
-    const char respostasCorretas[5] = {'c', 'a', 'b', 'b', 'd'};
-    const char* respostasCorretasTexto[5] = {
-        "Real Madrid", "Princesa Isabel", "Tony Stark", "2", "36"
-    };
-    
-    for(int i = 0; i < 5; i++) {
-        printf("%s", pergunta[i]);
-        scanf(" %c", &resposta);
-        
-        if(resposta == respostasCorretas[i]) {
-            printf("Resposta correta. \n");
-            acertos++;
-        } else {
-            printf("Resposta incorreta. A resposta correta e: %s\n", respostasCorretasTexto[i]);
-        }
-    }
-    
-    printf("Voce acertou %d de 5 perguntas!\n", acertos);
-    
-    char jogarNovamente;
-    printf("Quer jogar novamente? (s/n):");
-    scanf(" %c", &jogarNovamente);
-    if(jogarNovamente == 's' || jogarNovamente == 'S') {
-        perguntaEResposta();
-    } else {
-        printf("Voltando ao menu principal...\n");
-    }
-}
+Opção 2. O segundo jogo se chama "Cobra na Caixa!". Nele, são aprensentados dois exploradores que estão presos em uma tumba egípicia, onde se encontram 5 caixas, dentro de uma dessas caixas existe um botão que liberta os exploradores da tumba, no entanto, há a possibilidade de abrir uma caixa que contém uma cobra, fazendo com que os exploradores sejam envenenados.
+Este jogo possui 7 nomes pré-definidos e os jogadores devem escolher dois desses nomes.
+Após isso, as posições da cobra e do botão são sorteadas aleatoriamente e o jogo inicia, fazendo com que os usuários joguem alternadamente até que sejam encontrados a cobra ou o botão.
 
-void cobraNaCaixa() {
-    int cobra, botao, escolha, jogador;
-    srand(time(NULL));
-    
-    printf("Escolha dois jogadores (1-7): ");
-    int p1, p2;
-    scanf("%d %d", &p1, &p2);
-    p1--;
-    p2--;
-    char *jogadores[] = {nomes[p1], nomes[p2]};
-    
-    jogador = rand() % NUM_JOGADORES;
-    printf("%s comeca o jogo!\n", jogadores[jogador]);
-    
-    cobra = rand() % NUM_CAIXAS;
-    botao = rand() % NUM_CAIXAS;
-    while (botao == cobra) botao = rand() % NUM_CAIXAS;
-    
-    while (1) {
-        printf("%s, escolha uma caixa (1-%d): ", jogadores[jogador], NUM_CAIXAS);
-        scanf("%d", &escolha);
-        
-        if (escolha - 1 == cobra) {
-            printf("Voce encontrou a cobra! %s perdeu!\n", jogadores[jogador]);
-            break;
-        } else if (escolha - 1 == botao) {
-            printf("Voce encontrou o botao! %s venceu!\n", jogadores[jogador]);
-            break;
-        }
-        printf("Caixa vazia! Proximo jogador.\n");
-        jogador = (jogador + 1) % NUM_JOGADORES;
-    }
-    char jogarNovamente;
-    printf("Quer jogar novamente? (s/n):");
-    scanf(" %c", &jogarNovamente);
-    if(jogarNovamente == 's' || jogarNovamente == 'S') {
-        cobraNaCaixa();
-    } else {
-        printf("Voltando ao menu principal...\n");
-    }
-}
+Opção 3. "Gousmas War" é um jogo de estratégia baseados em Gousmas que possuem fúria.
+Cada jogador inicia com duas Gousmas, cada uma com 1 nível de fúria cada.
+A cada rodada os jogadores podem escolher entre 3 ações: Atacar, dividir e passar o turno para o outro jogador.
+Sempre que o  jogador atacar, a fúria da Gousma atacante é transferida para a Gousma atacada.
+Caso o jogador escolha dividir a sua Gousma, o nível de fúria pode ser transferido para outra Gousma da sua equipe.
+Se o nivel de fúria das Gousmas do jogador chegarem a zero, ele  perde. Assim como se uma Gousma ultrupassar o nível cinco de fúria.
 
-void exibirMenu() {
-    printf("Menu Principal \n");
-    printf("1. Pergunta e Resposta\n");
-    printf("2. Cobra na Caixa!\n");
-    printf("3. Sair\n");
-    printf("Escolha um jogo: ");
-}
+Conclusão:
+Este projeto contribuiu para o nosso aprendizado, tornando-nos mais capacitados para realização projetos. Durante o desenvolvimento do código, usamos diversas ferramentas para aprimorar os resultados. Dentre os principais recursos utilizados, destacam-se o ChatGPT, que auxiliou a responder dúvidas que tivemos, e as videoaulas do canal Pietro Martins de Oliveira, no Youtube, que ofereceram uma base teórica essencial para o nosso progresso.
 
-int main() {
-    int escolha;
-    do {
-        exibirMenu();
-        scanf("%d", &escolha);
-        
-        switch (escolha) {
-            case 1:
-                perguntaEResposta();
-                break;
-            case 2:
-                cobraNaCaixa();
-                break;
-            case 3:
-                printf("Saindo do programa...\n");
-                break;
-            default:
-                printf("Opcao invalida. Tente novamente.\n");
-        }
-    } while (escolha != 3);
-    
-    return 0;
-}
+ 
