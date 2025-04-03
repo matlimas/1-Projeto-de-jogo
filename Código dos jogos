@@ -1,0 +1,150 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+
+void perguntaEResposta() {
+    char resposta;
+    int acertos = 0;
+
+    const char* pergunta[5] = {
+        "Qual time de futebol tem mais titulos no mundo? \n(a)Barcelona \n(b)Clube do Remo \n(c)Real Madrid \n(d)Paysandu \nResposta: ",
+        "Quem foi considerada a Redentora do Brasil? \n(a) Princesa Isabel \n(b) Maria da Penha \n(c)Marta \n(d)Tarsila do Amaral \nResposta: ",
+        "Quem e o homem de ferro? \n(a)Bruce Wayne \n(b)Tony Stark \n(c)Steve Rogers \n(d)Bruce Banner \nResposta: ",
+        "Quanto e 1+1? \n(a)4 \n(b)2 \n(c)3 \n(d)5 \nResposta: ",
+        "Quanto e 6*6? \n(a)22 \n(b)24 \n(c)12 \n(d)36 \nResposta: "
+    };
+
+    const char respostasCorretas[5] = {'c', 'a', 'b', 'b', 'd'};
+    const char* respostasCorretasTexto[5] = {
+        "Real Madrid", "Princesa Isabel", "Tony Stark", "2", "36"
+    };
+
+    for(int i = 0; i < 5; i++) {
+        printf("%s", pergunta[i]);
+        scanf(" %c", &resposta);
+        
+        if(resposta == respostasCorretas[i]) {
+            printf("Resposta correta. \n");
+            acertos++;
+        } else {
+            printf("Resposta incorreta. A resposta correta e: %s\n", respostasCorretasTexto[i]);
+        }
+    }
+    printf("Voce acertou %d de 5 perguntas!\n", acertos);
+}
+
+void cobraNaCaixa() {
+
+	#define NUM_CAIXAS 5
+	#define NUM_JOGADORES 2
+
+	  
+    char *nomes[] = {"Neymar", "Cristiano", "Jaderson", "Kadu", "Eduardo", "Vinicius", "Raphinha"};
+
+    
+    int cobra, botao, escolha, jogador;
+    srand(time(NULL));
+
+    printf("Escolha dois jogadores (1-7): ");
+    int p1, p2;
+    scanf("%d %d", &p1, &p2);
+    p1--;
+    p2--;
+    char *jogadores[] = {nomes[p1], nomes[p2]};
+
+    jogador = rand() % NUM_JOGADORES;
+    printf("%s comeca o jogo!\n", jogadores[jogador]);
+
+    cobra = rand() % NUM_CAIXAS;
+    botao = rand() % NUM_CAIXAS;
+    while (botao == cobra) botao = rand() % NUM_CAIXAS;
+
+    while (1) {
+        printf("%s, escolha uma caixa (1-%d): ", jogadores[jogador], NUM_CAIXAS);
+        scanf("%d", &escolha);
+        
+        if (escolha - 1 == cobra) {
+            printf("Voce encontrou a cobra! %s perdeu!\n", jogadores[jogador]);
+            break;
+        } else if (escolha - 1 == botao) {
+            printf("Voce encontrou o botao! %s venceu!\n", jogadores[jogador]);
+            break;
+        }
+        printf("Caixa vazia! Proximo jogador.\n");
+        jogador = (jogador + 1) % NUM_JOGADORES;
+    }
+}
+
+void gousmasWar() {
+    float furia1 = 1, furia2 = 1, furia3 = 1, furia4 = 1;
+    int turno = 1;
+    while (!((furia1 == 0 && furia2 == 0) || (furia3 == 0 && furia4 == 0) || furia1 > 5 || furia2 > 5 || furia3 > 5 || furia4 > 5)) {
+        printf("\nJogador 1: Gousma 1 (%.1f) Gousma 2 (%.1f)\n", furia1, furia2);
+        printf("Jogador 2: Gousma 1 (%.1f) Gousma 2 (%.1f)\n", furia3, furia4);
+        printf("\nTurno do Jogador %d!\n1. Atacar\n2. Dividir\n3. Passar\nEscolha: ", turno);
+        int escolha;
+        scanf("%d", &escolha);
+        if (escolha == 1) {
+            int minha, alvo;
+            printf("Escolha sua Gousma (1 ou 2): ");
+            scanf("%d", &minha);
+            printf("Escolha a Gousma do oponente (1 ou 2): ");
+            scanf("%d", &alvo);
+            float *atacante = (turno == 1) ? (minha == 1 ? &furia1 : &furia2) : (minha == 1 ? &furia3 : &furia4);
+            float *oponente = (turno == 1) ? (alvo == 1 ? &furia3 : &furia4) : (alvo == 1 ? &furia1 : &furia2);
+            *oponente += *atacante;
+            *atacante = 0;
+        } else if (escolha == 2) {
+            int index;
+            float furiaNova;
+            printf("Escolha a Gousma para dividir (1 ou 2): ");
+            scanf("%d", &index);
+            printf("Furia para a nova Gousma: ");
+            scanf("%f", &furiaNova);
+            float *gousma = (turno == 1) ? (index == 1 ? &furia1 : &furia2) : (index == 1 ? &furia3 : &furia4);
+            float *novaGousma = (turno == 1) ? (index == 1 ? &furia2 : &furia1) : (index == 1 ? &furia4 : &furia3);
+            if (*gousma > furiaNova && furiaNova > 0) {
+                *novaGousma += furiaNova;
+                *gousma -= furiaNova;
+            }
+        }
+        turno = (turno == 1) ? 2 : 1;
+    }
+    printf("\nFim do jogo! O vencedor e o Jogador %d!\n", (furia1 > 5 || furia2 > 5) ? 2 : 1);
+}
+
+void exibirMenu() {
+    printf("Menu Principal \n");
+    printf("1. Pergunta e Resposta\n");
+    printf("2. Cobra na Caixa!\n");
+    printf("3. Gousmas War\n");
+    printf("4. Sair\n");
+    printf("Escolha um jogo: ");
+}
+
+int main() {
+    int escolha;
+    do {
+        exibirMenu();
+        scanf("%d", &escolha);
+        
+        switch (escolha) {
+            case 1:
+                perguntaEResposta();
+                break;
+            case 2:
+                cobraNaCaixa();
+                break;
+            case 3:
+                gousmasWar();
+                break;
+            case 4:
+                printf("Saindo do programa...\n");
+                break;
+            default:
+                printf("Opcao invalida. Tente novamente.\n");
+        }
+    } while (escolha != 4);
+    return 0;
+}
